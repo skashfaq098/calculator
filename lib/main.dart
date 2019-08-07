@@ -25,56 +25,93 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String output = "0";
-  String _output = "0";
-  double num1 = 0.0;
-  double num2 = 0.0;
-  String operand = "0";
+  var output = "";
+  var result = "";
+  var num1 = "";
+  var num2 = "";
+  var operand = "";
 
   buttonPressed(String buttonText) {
-    if (buttonText == "CLEAR") {
-      _output = "0";
-      num1 = 0.0;
-      num2 = 0.0;
-      operand = "0";
+    if ((buttonText == "0" ||
+            buttonText == "1" ||
+            buttonText == "2" ||
+            buttonText == "3" ||
+            buttonText == "4" ||
+            buttonText == "5" ||
+            buttonText == "6" ||
+            buttonText == "7" ||
+            buttonText == "8" ||
+            buttonText == "9" ||
+            buttonText == "." ||
+            buttonText == "00") &&
+        operand == "") {
+      //save to num1
+      num1 += buttonText;
+      setState(() {
+        output = num1;
+      });
+      print("Num1: " + num1);
+    } else if ((buttonText == "0" ||
+            buttonText == "1" ||
+            buttonText == "2" ||
+            buttonText == "3" ||
+            buttonText == "4" ||
+            buttonText == "5" ||
+            buttonText == "6" ||
+            buttonText == "7" ||
+            buttonText == "8" ||
+            buttonText == "9" ||
+            buttonText == "." ||
+            buttonText == "00") &&
+        operand != "") {
+      //save to num2
+      num2 += buttonText;
+      setState(() {
+        output = num2;
+      });
+
+      print("Num2: " + num2);
     } else if (buttonText == "+" ||
         buttonText == "-" ||
         buttonText == "/" ||
-        buttonText == "*") {
-      num1 = double.parse(output);
+        buttonText == "X") {
+      // save operand
+      print("Got operand: " + buttonText); //to remove
       operand = buttonText;
-      _output = "0";
-    } else if (buttonText == ".") {
-      if (_output.contains(".")) {
-        print("already contains a decimal");
-        return;
-      } else {
-        _output = _output + buttonText;
-      }
-    } else if (buttonText == "=") {
-      num2 = double.parse(output);
-      if (operand == "+") {
-        _output = (num1 + num2).toString();
-      }
-      if (operand == "-") {
-        _output = (num1 - num2).toString();
-      }
-      if (operand == "/") {
-        _output = (num1 / num2).toString();
-      }
-      if (operand == "*") {
-        _output = (num1 * num2).toString();
-      }
-      num1 = 0.0;
-      num2 = 0.0;
+      setState(() {
+        output = operand;
+      });
+    } else if (buttonText == "CLEAR") {
+      //reset all values
+      print("Clear: " + buttonText); // to remove
+      result = "";
+      num1 = "";
+      num2 = "";
       operand = "";
-    } else {
-      _output = _output + buttonText;
+      setState(() {
+        output = "";
+      });
+    } else if (buttonText == "=") {
+      //calculate result
+      if (operand == "+") {
+        result = (double.parse(num1) + double.parse(num2)).toString();
+      } else if (operand == "-") {
+        result = (double.parse(num1) - double.parse(num2)).toString();
+      } else if (operand == "/") {
+        result = (double.parse(num1) / double.parse(num2)).toString();
+      } else if (operand == "X") {
+        result = (double.parse(num1) * double.parse(num2)).toString();
+      } else {
+        print('Error calculating result');
+      }
+      setState(() {
+        output = result;
+      });
+      num1 = "";
+      num2 = "";
+      operand = "";
+      result = "";
     }
-    print(_output);
-    setState(() {
-      output = double.parse(_output).toStringAsFixed(2);
-    });
   }
 
   Widget buildbutton(String buttonText) {
@@ -138,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ]),
                 new Row(children: [
                   buildbutton("CLEAR"),
-                  buildbutton("= "),
+                  buildbutton("="),
                 ]),
               ])
             ],
