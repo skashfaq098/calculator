@@ -1,6 +1,7 @@
 # calculator
 
-A new Flutter project.
+Calculator for Basic Arithmetic Operations.
+![](/calc.png)
 
 ## Getting Started
 
